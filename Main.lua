@@ -104,6 +104,21 @@ local function CheckForParryRiposte(Character: Model): boolean
 
 end
 
+local function IsRiposte(Character: Model): boolean
+
+    local Tool = Character:FindFirstChildOfClass("Tool")
+
+    if Tool then
+        
+        if Tool.Stance.Value == "Riposte" then return true end
+        if Tool.Stance.Value == "RiposteDelay" then return true end
+
+    end
+
+    return false
+
+end
+
 -- Main
 if _G.Connections.RS ~= nil then -- If reexecuted then destroy previous connection.
 
@@ -147,7 +162,7 @@ _G.Connections.RS = Run.RenderStepped:Connect(function()
 
             local Distance: number = GetDistance(LRootPos, PTarget.Position)
 
-            if Distance < _G.KillAura.MaxDistance and Player:GetAttribute("PVP") == true and DelayHit == false and HasWeaponEquipped() then
+            if Distance < _G.KillAura.MaxDistance and Player:GetAttribute("PVP") == true and DelayHit == false and HasWeaponEquipped() and IsRiposte(LCharacter) == false then
 
                 -- Riposte/Parry check if they have it enabled.
                 if _G.KillAura.RiposteCheck then
